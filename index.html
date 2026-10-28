@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sangkyu Cho · burn001</title>
+<meta name="description" content="Sangkyu Cho (Dr.Egg) — data scientist at the Architecture & Urban Research Institute, building tools for urban policy data and AI coding agents.">
+<meta property="og:title" content="Sangkyu Cho · burn001">
+<meta property="og:description" content="Data scientist at AURI. Urban policy data, Korean public data, and tools for AI coding agents.">
+<meta property="og:image" content="https://burn001.github.io/avatar.png">
+<link rel="icon" href="avatar.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: a desk-side page — header bar, hero (text | live avatar), then work as a plain list of rows */
+:root {
+  --bg: #f1f3f6; --surface: #ffffff; --fg: #18202c; --dim: #5b6575; --line: #d5dae2; --accent: #1f7fa3; --holo: #5cc8e8;
+  --f-body: "IBM Plex Sans", "IBM Plex Sans KR", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #0b0e15; --surface: #121722; --fg: #e6e9ef; --dim: #8e97a7; --line: #232a38; --accent: #5cc8e8; color-scheme: dark } }
+* { box-sizing: border-box; }
+html:lang(ko) { --f-body: "IBM Plex Sans KR", "IBM Plex Sans", system-ui, sans-serif; word-break: keep-all; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 var(--f-body); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 18px; font-family: var(--f-mono); font-size: 14px; }
+header.bar .handle { color: var(--dim); }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.lang button { font: 500 13px var(--f-mono); color: var(--dim); background: transparent; border: 0; padding: 6px 12px; cursor: pointer; }
+.lang button[aria-pressed="true"] { color: var(--bg); background: var(--fg); }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 32px; align-items: center; padding-block: 24px 40px; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .stage { order: -1; } }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.05; margin: 0; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+h1 small { display: block; font: 400 16px var(--f-mono); color: var(--dim); margin-top: 10px; letter-spacing: 0; }
+.lede { font-size: 18px; color: var(--fg); max-width: 34em; margin: 20px 0 0; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-family: var(--f-mono); font-size: 14px; }
+.stage { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+.stage .cap { position: absolute; left: 12px; bottom: 10px; font: 12px var(--f-mono); color: var(--dim); pointer-events: none; }
+section { padding-block: 28px; border-top: 1px solid var(--line); }
+h2 { font-size: 13px; font-family: var(--f-mono); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin: 0 0 18px; }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; }
+.feature h3 { font-size: 24px; margin: 0; }
+.feature p { margin: 6px 0 0; color: var(--dim); max-width: 40em; grid-column: 1; }
+.feature .go { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 6px; font-family: var(--f-mono); font-size: 14px; }
+@media (max-width: 600px) { .feature { grid-template-columns: 1fr; } .feature .go { grid-column: 1; grid-row: auto; flex-direction: row; flex-wrap: wrap; gap: 6px 16px; } }
+ul.rows { list-style: none; margin: 0; padding: 0; display: grid; }
+ul.rows li { display: grid; grid-template-columns: 15em minmax(0, 1fr); gap: 4px 24px; padding-block: 12px; border-bottom: 1px solid var(--line); }
+ul.rows li:last-child { border-bottom: 0; }
+ul.rows a { font-family: var(--f-mono); font-size: 14px; }
+ul.rows span { color: var(--dim); }
+@media (max-width: 600px) { ul.rows li { grid-template-columns: 1fr; } }
+.topics { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.topics li { font-size: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface); }
+footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font-size: 13px; color: var(--dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <span class="handle">github.com/burn001</span>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="ko" aria-pressed="false">한국어</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <p class="eyebrow" data-i18n="eyebrow">Data scientist · AURI</p>
+      <h1><span data-i18n="name">Sangkyu Cho</span><small>Dr.Egg · burn001</small></h1>
+      <p class="lede" data-i18n="lede">I work with data on cities, buildings and public policy at the Architecture &amp; Urban Research Institute in Korea, and build tools that let AI coding agents do research work in the open.</p>
+      <nav class="links" aria-label="Links">
+        <a href="https://github.com/burn001">GitHub</a>
+        <a href="https://www.threads.com/@cho.sangkyu">Threads</a>
+        <a href="https://www.auri.re.kr" data-i18n="auri">AURI</a>
+      </nav>
+    </div>
+    <div class="stage" id="stage"><span class="cap" data-i18n="cap">Drag to turn · live render</span></div>
+  </div>
+
+  <section>
+    <h2 data-i18n="h-now">Now building</h2>
+    <div class="feature">
+      <h3>Agent4D</h3>
+      <p data-i18n="agent4d">See what your Claude Code agents are doing, live in 3D, then replay it. A local, read-only viewer for subagents, workflows, <code>claude -p</code> runs and background shells. The avatar above is drawn with its voxel office rig.</p>
+      <div class="go">
+        <a href="https://github.com/burn001/agent4d" data-i18n="repo">Repository</a>
+        <a href="https://burn001.github.io/agent4d/" data-i18n="tour">Tour</a>
+        <a href="https://github.com/burn001/agent4d/releases/latest" data-i18n="release">Latest release</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="h-work">Selected work</h2>
+    <ul class="rows">
+      <li><a href="https://github.com/burn001/smart-city-plan-analysis">smart-city-plan-analysis</a><span data-i18n="w-smart">Dashboard analysing how 37 local governments carried out their smart city plans.</span></li>
+      <li><a href="https://github.com/burn001/gwacheon-ahp-survey">gwacheon-ahp-survey</a><span data-i18n="w-ahp">Expert survey (AHP) for an evaluation framework for ageing government office buildings.</span></li>
+      <li><a href="https://github.com/burn001/complex-use-survey">complex-use-survey</a><span data-i18n="w-delphi">Delphi and AHP expert survey system for mixed-use design standards.</span></li>
+      <li><a href="https://github.com/burn001/eggNLP">eggNLP</a><span data-i18n="w-nlp">Earlier Korean text-mining utilities in Python.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 data-i18n="h-topics">Interests</h2>
+    <ul class="topics">
+      <li data-i18n="t1">Urban &amp; building policy data</li>
+      <li data-i18n="t2">Korean public data</li>
+      <li data-i18n="t3">Expert surveys (AHP · Delphi)</li>
+      <li data-i18n="t4">AI coding agents</li>
+      <li data-i18n="t5">3D visualization</li>
+    </ul>
+  </section>
+
+  <footer data-i18n="foot">Views here are my own. Agent4D is an unofficial project, not made or endorsed by Anthropic.</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="avatar.js"></script>
+<script>
+const KO = {
+  eyebrow: '데이터 과학자 · 건축공간연구원',
+  name: '조상규',
+  lede: '건축공간연구원(AURI)에서 도시·건축·공공정책 데이터를 다루고, AI 코딩 에이전트가 연구 업무를 하는 모습을 그대로 볼 수 있는 도구를 만듭니다.',
+  auri: '건축공간연구원',
+  cap: '끌어서 돌리기 · 실시간 렌더링',
+  'h-now': '지금 만드는 것',
+  agent4d: 'Claude Code 에이전트가 하는 일을 3D로 실시간 보고, 나중에 다시 재생합니다. 서브에이전트·워크플로·<code>claude -p</code>·백그라운드 셸을 읽기 전용으로 보여 주는 로컬 뷰어입니다. 위 아바타도 이 프로젝트의 복셀 오피스 캐릭터 골격으로 그렸습니다.',
+  repo: '저장소', tour: '소개 페이지', release: '최신 릴리스',
+  'h-work': '작업',
+  'w-smart': '37개 지자체 스마트도시계획 이행실적 분석 대시보드',
+  'w-ahp': '노후 정부청사 종합진단 평가체계 전문가 조사(AHP)',
+  'w-delphi': '복합활용 설계기준 전문가 설문 시스템(델파이·AHP)',
+  'w-nlp': '예전에 만든 한국어 텍스트 마이닝 도구(Python)',
+  'h-topics': '관심사',
+  t1: '도시·건축 정책 데이터', t2: '한국 공공데이터', t3: '전문가 조사(AHP·델파이)', t4: 'AI 코딩 에이전트', t5: '3D 시각화',
+  foot: '이 페이지의 의견은 개인 의견입니다. Agent4D는 Anthropic이 만들거나 보증한 프로젝트가 아닌 비공식 프로젝트입니다.',
+};
+const EN = {};
+document.querySelectorAll('[data-i18n]').forEach((el) => (EN[el.dataset.i18n] = el.innerHTML));
+const TITLE = { en: 'Sangkyu Cho · burn001', ko: '조상규 · burn001' };
+function setLang(l) {
+  const dict = l === 'ko' ? KO : EN;
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i18n]').forEach((el) => { const v = dict[el.dataset.i18n]; if (v != null) el.innerHTML = v; });
+  document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  document.title = TITLE[l];
+  try { localStorage.setItem('lang', l); } catch {}
+}
+document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+let start = new URLSearchParams(location.search).get('lang') || location.hash.replace('#', '');
+if (start !== 'ko' && start !== 'en') { try { start = localStorage.getItem('lang'); } catch {} }
+setLang(start === 'ko' ? 'ko' : 'en');
+if (window.THREE && window.mountAvatar) mountAvatar(document.getElementById('stage'));
+</script>
+</body>
+</html>
