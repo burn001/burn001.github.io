@@ -42,7 +42,7 @@ h1 small { display: block; font: 400 16px var(--f-mono); color: var(--dim); marg
 .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-family: var(--f-mono); font-size: 14px; }
 .stage { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
 .stage canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
-.stage .cap { position: absolute; left: 12px; bottom: 10px; font: 12px var(--f-mono); color: var(--dim); pointer-events: none; }
+.stage .cap { position: absolute; left: 10px; bottom: 8px; font: 12px var(--f-mono); color: var(--dim); background: var(--surface); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
 section { padding-block: 28px; border-top: 1px solid var(--line); }
 h2 { font-size: 13px; font-family: var(--f-mono); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin: 0 0 18px; }
 .feature { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; }
@@ -150,12 +150,12 @@ const T = {
     eyebrow: 'Senior Research Fellow · AURI',
     name: 'Sangkyu Cho, Ph.D.',
     handle: 'Dr.Egg · burn001',
-    lede: 'I research smart cities, green buildings and cities, and building and urban information systems at the Architecture &amp; Urban Research Institute (AURI) in Korea. Lately I build AI systems that read Korean building law, and the tools I use to build them.',
+    lede: 'I study how cities and buildings work (smart cities, green buildings and cities, and the building and urban data underneath them) at the Architecture &amp; Urban Research Institute (AURI) in Korea. Lately I teach AI to read Korean building law, and build tools to watch it do its homework.',
     auri: 'AURI',
-    cap: 'Drag to turn · live render',
-    'h-work': 'Work', 'h-cv': 'CV', 'k-alris': 'Research system · AURI', 'k-agent4d': 'Side project · open source',
-    alris: 'AI service that answers questions on Korean building law with the provisions behind each answer. Statutes and 150,000+ local ordinances, searched by a team of agents.',
-    agent4d: 'See what your Claude Code agents are doing, live in 3D, then replay it. The avatar above uses its voxel office rig.',
+    cap: 'Drag to turn · he dozes off between commits',
+    'h-work': 'Things I make', 'h-cv': 'Paper trail', 'k-alris': 'Research system · AURI', 'k-agent4d': 'Side project · open source',
+    alris: 'Ask it about Korean building law and it answers with the article number, so you never have to take its word for it. Statutes and 150,000+ local ordinances, read by a team of agents that never claim overtime.',
+    agent4d: 'My Claude Code agents do the work while I watch them in 3D, live or on replay. Highly recommended for productivity, or at least for the feeling of it. The sleepy guy above comes from here too.',
     tabs: { exp: 'Experience', edu: 'Education', pubs: 'Papers', proj: 'Projects', service: 'Committees', awards: 'Awards' },
     'h-fields': 'Fields',
     fields: ['Smart cities', 'Green buildings &amp; cities', 'Building &amp; urban information systems', 'AI for building law', 'Building statistics'],
@@ -217,19 +217,19 @@ const T = {
       ['2019', 'Minister’s Commendation, Ministry of Land, Infrastructure and Transport'],
       ['2016', 'Commendation, Minister for Government Policy Coordination'],
     ],
-    foot: 'Views here are my own. Agent4D is an unofficial project, not made or endorsed by Anthropic.',
+    foot: 'Views here are my own. So is the avatar’s sleep schedule. Agent4D is an unofficial project, not made or endorsed by Anthropic.',
   },
   ko: {
     title: '조상규 · burn001',
     eyebrow: '건축공간연구원 선임연구위원',
     name: '조상규<span class="deg">Ph.D.</span>',
     handle: 'Dr.Egg · burn001',
-    lede: '건축공간연구원(AURI) 건축혁신본부에서 스마트시티, 녹색건축·도시, 건축·도시정보체계를 연구합니다. 요즘은 건축법령을 읽고 답하는 AI 시스템과, 그 시스템을 만드는 데 쓰는 도구를 만들고 있습니다.',
+    lede: '건축공간연구원(AURI) 건축혁신본부에서 스마트시티, 녹색건축·도시, 건축·도시정보체계를 연구합니다. 요즘은 AI에게 건축법령을 가르치고, AI가 숙제하는 모습을 구경하는 도구도 만듭니다.',
     auri: '건축공간연구원',
-    cap: '끌어서 돌리기 · 실시간 렌더링',
-    'h-work': '만드는 것', 'h-cv': '이력', 'k-alris': '연구 시스템 · 건축공간연구원', 'k-agent4d': '개인 프로젝트 · 오픈소스',
-    alris: '건축법령 질문에 근거 조문과 함께 답하는 인공지능 건축법령 서비스. 법령과 자치법규 15만여 건을 여러 에이전트가 나눠 검색합니다.',
-    agent4d: 'Claude Code 에이전트가 하는 일을 3D로 실시간 보고 다시 재생합니다. 위 아바타도 이 프로젝트의 복셀 캐릭터입니다.',
+    cap: '끌어서 돌리기 · 커밋 사이사이 졸고 있습니다',
+    'h-work': '만들고 있는 것', 'h-cv': '걸어온 길', 'k-alris': '연구 시스템 · 건축공간연구원', 'k-agent4d': '개인 프로젝트 · 오픈소스',
+    alris: '건축법령을 물으면 조문 번호부터 내밀어서, 믿어 달라고 조를 일이 없습니다. 법령과 자치법규 15만여 건을 야근 수당 안 받는 에이전트들이 나눠 읽습니다.',
+    agent4d: '에이전트는 일하고 저는 그걸 3D로 구경합니다. 실시간으로도, 다시 보기로도요. 위에서 졸고 있는 사람도 이 프로젝트 출신입니다.',
     tabs: { exp: '경력', edu: '학력', pubs: '논문', proj: '연구', service: '위원회', awards: '수상' },
     'h-fields': '전문 분야',
     fields: ['스마트시티', '녹색건축·도시', '건축·도시정보체계', '건축법령 AI', '건축 통계'],
@@ -291,7 +291,7 @@ const T = {
       ['2019', '국토교통부장관 표창 <small>업무유공</small>'],
       ['2016', '국무조정실장 표창 <small>업무유공</small>'],
     ],
-    foot: '이 페이지의 의견은 개인 의견입니다. Agent4D는 Anthropic이 만들거나 보증한 프로젝트가 아닌 비공식 프로젝트입니다.',
+    foot: '이 페이지의 의견은 개인 의견이고, 아바타의 수면 패턴도 개인 사정입니다. Agent4D는 Anthropic이 만들거나 보증한 프로젝트가 아닌 비공식 프로젝트입니다.',
   },
 };
 
