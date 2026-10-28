@@ -66,9 +66,11 @@ ul.plain li { padding-block: 3px; }
 ul.plain li small { color: var(--dim); font-size: 14px; }
 .topics { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .topics li { font-size: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface); }
-@media (max-width: 600px) { .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--fg); text-decoration: none; transition: border-color .15s, transform .15s; }
 .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card { overflow: hidden; }
+.card .shot { display: block; width: calc(100% + 40px); max-width: none; margin: -18px -20px 10px; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; border-bottom: 1px solid var(--line); }
 .card .kicker { font: 12px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
 .card b { font-size: 24px; font-weight: 600; }
 .card .desc { color: var(--dim); font-size: 15px; flex: 1; }
@@ -113,12 +115,14 @@ footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font-size:
     <h2 data-t="h-work"></h2>
     <div class="cards">
       <a class="card" href="https://alris.auri.re.kr">
+        <img class="shot" src="img/alris.jpg" alt="ALRIS question screen" width="1200" height="635" loading="lazy">
         <span class="kicker" data-t="k-alris"></span>
         <b>ALRIS</b>
         <span class="desc" data-t="alris"></span>
         <span class="foot">alris.auri.re.kr →</span>
       </a>
       <a class="card" href="https://github.com/burn001/agent4d">
+        <img class="shot" src="img/agent4d.jpg" alt="Agent4D Flow view with several projects and agents" width="1200" height="675" loading="lazy">
         <span class="kicker" data-t="k-agent4d"></span>
         <b>Agent4D</b>
         <span class="desc" data-t="agent4d"></span>
