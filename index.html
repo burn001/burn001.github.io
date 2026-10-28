@@ -51,10 +51,6 @@ h2 { font-size: 13px; font-family: var(--f-mono); font-weight: 500; letter-spaci
 .feature .body p { margin: 6px 0 0; }
 .feature .go { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 6px; font-family: var(--f-mono); font-size: 14px; }
 @media (max-width: 600px) { .feature { grid-template-columns: 1fr; } .feature .go { grid-column: 1; grid-row: auto; flex-direction: row; flex-wrap: wrap; gap: 6px 16px; } }
-ol.steps { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 10px; }
-ol.steps li { border-top: 2px solid var(--line); padding-top: 8px; font-size: 14px; color: var(--dim); }
-ol.steps li b { display: block; color: var(--fg); font: 500 13px var(--f-mono); }
-ol.steps li.now { border-top-color: var(--accent); }
 .cv { display: grid; grid-template-columns: 11em minmax(0, 1fr); gap: 0 24px; }
 .cv h2 { margin: 0; padding-top: 3px; }
 .cv + .cv { margin-top: 0; }
@@ -74,6 +70,20 @@ ul.repos li { display: grid; grid-template-columns: 15em minmax(0, 1fr); gap: 2p
 ul.repos a { font-family: var(--f-mono); font-size: 14px; }
 ul.repos span { color: var(--dim); }
 @media (max-width: 600px) { ul.repos li { grid-template-columns: 1fr; } }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--fg); text-decoration: none; transition: border-color .15s, transform .15s; }
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card .kicker { font: 12px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.card b { font-size: 24px; font-weight: 600; }
+.card .desc { color: var(--dim); font-size: 15px; flex: 1; }
+.card .foot { font: 13px var(--f-mono); color: var(--accent); margin-top: 6px; }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:hover { transform: none; } }
+.hero .topics { margin-top: 18px; }
+.tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 16px; scrollbar-width: thin; }
+.tabs button { flex: none; font: 500 14px var(--f-body); color: var(--dim); background: transparent; border: 0; border-bottom: 2px solid transparent; padding: 8px 12px; cursor: pointer; margin-bottom: -1px; }
+.tabs button[aria-selected="true"] { color: var(--fg); border-bottom-color: var(--accent); }
+.tabs button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.panel { min-height: 12em; }
 footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font-size: 13px; color: var(--dim); }
 </style>
 </head>
@@ -98,44 +108,33 @@ footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font-size:
         <a href="https://www.threads.com/@cho.sangkyu">Threads</a>
         <a href="https://www.auri.re.kr" data-t="auri"></a>
       </nav>
+      <ul class="topics" id="fields"></ul>
     </div>
     <div class="stage" id="stage"><span class="cap" data-t="cap"></span></div>
   </div>
 
   <section>
-    <h2 data-t="h-research"></h2>
-    <div class="feature">
-      <h3>ALRIS<span>alris.auri.re.kr</span></h3>
-      <div class="body" data-t="alris"></div>
-      <div class="go">
-        <a href="https://alris.auri.re.kr" data-t="open"></a>
-      </div>
+    <h2 data-t="h-work"></h2>
+    <div class="cards">
+      <a class="card" href="https://alris.auri.re.kr">
+        <span class="kicker" data-t="k-alris"></span>
+        <b>ALRIS</b>
+        <span class="desc" data-t="alris"></span>
+        <span class="foot">alris.auri.re.kr →</span>
+      </a>
+      <a class="card" href="https://github.com/burn001/agent4d">
+        <span class="kicker" data-t="k-agent4d"></span>
+        <b>Agent4D</b>
+        <span class="desc" data-t="agent4d"></span>
+        <span class="foot">github.com/burn001/agent4d →</span>
+      </a>
     </div>
-    <ol class="steps" id="alris-steps"></ol>
   </section>
 
   <section>
-    <h2 data-t="h-side"></h2>
-    <div class="feature">
-      <h3>Agent4D<span>open source</span></h3>
-      <div class="body" data-t="agent4d"></div>
-      <div class="go">
-        <a href="https://github.com/burn001/agent4d" data-t="repo"></a>
-        <a href="https://burn001.github.io/agent4d/" data-t="tour"></a>
-        <a href="https://github.com/burn001/agent4d/releases/latest" data-t="release"></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="cv"><h2 data-t="h-fields"></h2><ul class="topics" id="fields"></ul></section>
-  <section class="cv"><h2 data-t="h-exp"></h2><ul class="rows" id="exp"></ul></section>
-  <section class="cv"><h2 data-t="h-edu"></h2><ul class="rows" id="edu"></ul></section>
-  <section class="cv"><h2 data-t="h-pubs"></h2><ul class="plain" id="pubs"></ul></section>
-  <section class="cv"><h2 data-t="h-proj"></h2><ul class="rows" id="proj"></ul></section>
-  <section class="cv"><h2 data-t="h-service"></h2><ul class="rows" id="service"></ul></section>
-  <section class="cv"><h2 data-t="h-awards"></h2><ul class="rows" id="awards"></ul></section>
-  <section class="cv"><h2 data-t="h-code"></h2>
-    <ul class="repos" id="repos"></ul>
+    <h2 data-t="h-cv"></h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="panels"></div>
   </section>
 
   <footer data-t="foot"></footer>
@@ -154,18 +153,10 @@ const T = {
     lede: 'I research smart cities, green buildings and cities, and building and urban information systems at the Architecture &amp; Urban Research Institute (AURI) in Korea. Lately I build AI systems that read Korean building law, and the tools I use to build them.',
     auri: 'AURI',
     cap: 'Drag to turn · live render',
-    'h-research': 'Research system',
-    alris: '<p><b>ALRIS</b> (AI Legal and Regulatory Intelligence System) is an AI service that answers questions about Korean building law. It searches national statutes and local ordinances together, follows the references between articles, and cites the provisions behind each answer. Several agents split the work: a guardrail, a planner, a retriever, an answer writer and a knowledge keeper that learns from past questions.</p><p>It grew out of a series of AURI studies I have led since 2023 on using large language models for building permit questions and legal interpretation.</p>',
-    open: 'Open ALRIS',
-    steps: [
-      ['2023 · Archilaw', 'First prototype: retrieval-augmented answers on building-related complaints.'],
-      ['2024 · Archilaw v2', 'Better retrieval and evaluation; 78% correct on a 1,205-question benchmark.'],
-      ['2025 · ALRIS', 'Rebuilt as a multi-agent system with conversation history and a knowledge cycle.'],
-      ['2026 · ALRIS now', 'Hybrid search and wider data coverage, including more than 150,000 local ordinances.'],
-    ],
-    'h-side': 'Side project',
-    agent4d: '<p>See what your Claude Code agents are doing, live in 3D, then replay it. A local, read-only viewer for subagents, workflows, <code>claude -p</code> runs and background shells. The avatar above is drawn with its voxel office rig.</p>',
-    repo: 'Repository', tour: 'Tour', release: 'Latest release',
+    'h-work': 'Work', 'h-cv': 'CV', 'k-alris': 'Research system · AURI', 'k-agent4d': 'Side project · open source',
+    alris: 'AI service that answers questions on Korean building law with the provisions behind each answer. Statutes and 150,000+ local ordinances, searched by a team of agents.',
+    agent4d: 'See what your Claude Code agents are doing, live in 3D, then replay it. The avatar above uses its voxel office rig.',
+    tabs: { exp: 'Experience', edu: 'Education', pubs: 'Papers', proj: 'Projects', service: 'Committees', awards: 'Awards', repos: 'Code' },
     'h-fields': 'Fields',
     fields: ['Smart cities', 'Green buildings &amp; cities', 'Building &amp; urban information systems', 'AI for building law', 'Building statistics'],
     'h-exp': 'Experience',
@@ -243,18 +234,10 @@ const T = {
     lede: '건축공간연구원(AURI) 건축혁신본부에서 스마트시티, 녹색건축·도시, 건축·도시정보체계를 연구합니다. 요즘은 건축법령을 읽고 답하는 AI 시스템과, 그 시스템을 만드는 데 쓰는 도구를 만들고 있습니다.',
     auri: '건축공간연구원',
     cap: '끌어서 돌리기 · 실시간 렌더링',
-    'h-research': '연구 시스템',
-    alris: '<p><b>ALRIS</b>(AI Legal and Regulatory Intelligence System)는 건축법령 질문에 답하는 인공지능 건축법령 서비스입니다. 법령과 자치법규를 함께 검색하고, 조문 사이의 참조 관계를 따라가며, 답마다 근거 조문을 밝힙니다. 가드레일·계획·검색·답변 작성·운영 지식 관리를 여러 에이전트가 나눠 맡고, 지난 질문에서 쌓은 지식을 다시 씁니다.</p><p>2023년부터 연구책임을 맡아 온 건축공간연구원의 대규모 언어모델 활용 건축민원·법령해석 지원 연구에서 출발했습니다.</p>',
-    open: 'ALRIS 열기',
-    steps: [
-      ['2023 · Archilaw', '첫 시제품. 건축민원 질문에 검색 증강 생성으로 답함'],
-      ['2024 · Archilaw V2', '검색과 평가 고도화. 1,205문항 벤치마크 정답률 78%'],
-      ['2025 · ALRIS', '다중 에이전트 구조로 새로 설계, 대화 이력과 지식 순환 도입'],
-      ['2026 · ALRIS 현재', '하이브리드 검색과 데이터 확장. 자치법규 15만 건 이상'],
-    ],
-    'h-side': '개인 프로젝트',
-    agent4d: '<p>Claude Code 에이전트가 하는 일을 3D로 실시간 보고, 나중에 다시 재생합니다. 서브에이전트·워크플로·<code>claude -p</code>·백그라운드 셸을 읽기 전용으로 보여 주는 로컬 뷰어입니다. 위 아바타도 이 프로젝트의 복셀 오피스 캐릭터 골격으로 그렸습니다.</p>',
-    repo: '저장소', tour: '소개 페이지', release: '최신 릴리스',
+    'h-work': '만드는 것', 'h-cv': '이력', 'k-alris': '연구 시스템 · 건축공간연구원', 'k-agent4d': '개인 프로젝트 · 오픈소스',
+    alris: '건축법령 질문에 근거 조문과 함께 답하는 인공지능 건축법령 서비스. 법령과 자치법규 15만여 건을 여러 에이전트가 나눠 검색합니다.',
+    agent4d: 'Claude Code 에이전트가 하는 일을 3D로 실시간 보고 다시 재생합니다. 위 아바타도 이 프로젝트의 복셀 캐릭터입니다.',
+    tabs: { exp: '경력', edu: '학력', pubs: '논문', proj: '연구', service: '위원회', awards: '수상', repos: '코드' },
     'h-fields': '전문 분야',
     fields: ['스마트시티', '녹색건축·도시', '건축·도시정보체계', '건축법령 AI', '건축 통계'],
     'h-exp': '경력',
@@ -327,17 +310,36 @@ const T = {
 };
 
 const $ = (id) => document.getElementById(id);
+const TABS = ['exp', 'edu', 'pubs', 'proj', 'service', 'awards', 'repos'];
+let current = 'exp';
+function showTab(k, focus) {
+  current = k;
+  for (const t of TABS) {
+    const on = t === k, b = $('tab-' + t);
+    b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; $('panel-' + t).hidden = !on;
+    if (on && focus) b.focus();
+  }
+}
+$('tabs').addEventListener('click', (e) => { const b = e.target.closest('[role=tab]'); if (b) showTab(b.id.slice(4)); });
+$('tabs').addEventListener('keydown', (e) => {
+  const i = TABS.indexOf(current), n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+  if (n) { e.preventDefault(); showTab(TABS[(i + n + TABS.length) % TABS.length], true); }
+});
 const rows = (list) => list.map(([w, x]) => `<li><span class="when">${w}</span><span class="what">${x}</span></li>`).join('');
 function setLang(l) {
   const d = T[l];
   document.documentElement.lang = l;
   document.title = d.title;
   document.querySelectorAll('[data-t]').forEach((el) => { const v = d[el.dataset.t]; if (typeof v === 'string') el.innerHTML = v; });
-  $('alris-steps').innerHTML = d.steps.map(([h, s], i) => `<li${i === d.steps.length - 1 ? ' class="now"' : ''}><b>${h}</b>${s}</li>`).join('');
   $('fields').innerHTML = d.fields.map((f) => `<li>${f}</li>`).join('');
-  for (const k of ['exp', 'edu', 'proj', 'service', 'awards']) $(k).innerHTML = rows(d[k]);
-  $('pubs').innerHTML = d.pubs.map((p) => `<li>${p}</li>`).join('');
-  $('repos').innerHTML = d.repos.map(([n, s]) => `<li><a href="https://github.com/burn001/${n}">${n}</a><span>${s}</span></li>`).join('');
+  const body = {
+    pubs: `<ul class="plain">${d.pubs.map((p) => `<li>${p}</li>`).join('')}</ul>`,
+    repos: `<ul class="repos">${d.repos.map(([n, x]) => `<li><a href="https://github.com/burn001/${n}">${n}</a><span>${x}</span></li>`).join('')}</ul>`,
+  };
+  for (const k of ['exp', 'edu', 'proj', 'service', 'awards']) body[k] = `<ul class="rows">${rows(d[k])}</ul>`;
+  $('tabs').innerHTML = TABS.map((k) => `<button type="button" role="tab" id="tab-${k}" aria-controls="panel-${k}">${d.tabs[k]}</button>`).join('');
+  $('panels').innerHTML = TABS.map((k) => `<div class="panel" role="tabpanel" id="panel-${k}" aria-labelledby="tab-${k}" tabindex="0" hidden>${body[k]}</div>`).join('');
+  showTab(current);
   document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
   try { localStorage.setItem('lang', l); } catch {}
 }
