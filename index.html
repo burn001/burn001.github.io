@@ -36,6 +36,7 @@ header.bar .handle { color: var(--dim); }
 @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .stage { order: -1; } }
 .eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
 h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.05; margin: 0; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+h1 .deg { font: 500 .36em var(--f-mono); color: var(--dim); margin-left: .4em; letter-spacing: 0; }
 h1 small { display: block; font: 400 16px var(--f-mono); color: var(--dim); margin-top: 10px; letter-spacing: 0; }
 .lede { font-size: 18px; max-width: 34em; margin: 20px 0 0; }
 .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-family: var(--f-mono); font-size: 14px; }
@@ -229,7 +230,7 @@ const T = {
   ko: {
     title: '조상규 · burn001',
     eyebrow: '건축공간연구원 선임연구위원',
-    name: '조상규',
+    name: '조상규<span class="deg">Ph.D.</span>',
     handle: 'Dr.Egg · burn001',
     lede: '건축공간연구원(AURI) 건축혁신본부에서 스마트시티, 녹색건축·도시, 건축·도시정보체계를 연구합니다. 요즘은 건축법령을 읽고 답하는 AI 시스템과, 그 시스템을 만드는 데 쓰는 도구를 만들고 있습니다.',
     auri: '건축공간연구원',
