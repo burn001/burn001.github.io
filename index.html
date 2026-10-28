@@ -42,7 +42,10 @@ h1 small { display: block; font: 400 16px var(--f-mono); color: var(--dim); marg
 .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-family: var(--f-mono); font-size: 14px; }
 .stage { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
 .stage canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
-.stage .cap { position: absolute; left: 10px; bottom: 8px; font: 12px var(--f-mono); color: var(--dim); background: var(--surface); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
+.stage .cap { position: absolute; left: 10px; bottom: 8px; max-width: calc(100% - 20px); font: 12px var(--f-mono); color: var(--dim); background: var(--surface); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
+.stage .reroll { position: absolute; right: 8px; top: 8px; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; color: var(--dim); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.stage .reroll:hover { color: var(--accent); border-color: var(--accent); }
+.stage .reroll svg { width: 18px; height: 18px; }
 section { padding-block: 28px; border-top: 1px solid var(--line); }
 h2 { font-size: 13px; font-family: var(--f-mono); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin: 0 0 18px; }
 .feature { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: baseline; }
@@ -108,7 +111,7 @@ footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font-size:
       </nav>
       <ul class="topics" id="fields"></ul>
     </div>
-    <div class="stage" id="stage"><span class="cap" data-t="cap"></span></div>
+    <div class="stage" id="stage"><span class="cap" id="cap"></span><button type="button" class="reroll" id="reroll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg></button></div>
   </div>
 
   <section>
@@ -151,7 +154,8 @@ const T = {
     handle: 'Dr.Egg · burn001',
     lede: 'I study how cities and buildings work (smart cities, green buildings and cities, and the building and urban data underneath them) at the Architecture &amp; Urban Research Institute (AURI) in Korea. Lately I teach AI to read Korean building law, and build tools to watch it do its homework.',
     auri: 'AURI',
-    cap: 'Drag to turn · he dozes off between commits',
+    reroll: 'Another look',
+    scenes: { desk: 'Coding standing up', golf: 'Practicing a golf swing', couch: 'Coding lying on the couch', nap: 'Napping on the desk', lean: 'Leaning back with a coffee', board: 'Sketching a floor plan', walk: 'Off to a meeting, laptop in hand', treadmill: 'Coding on a treadmill desk', papers: 'Buried in review reports' },
     'h-work': 'Things I make', 'h-cv': 'Paper trail', 'k-alris': 'Research system · AURI', 'k-agent4d': 'Side project · open source',
     alris: 'Ask it about Korean building law and it answers with the article number, so you never have to take its word for it. Statutes and 150,000+ local ordinances, read by a team of agents that never claim overtime.',
     agent4d: 'My Claude Code agents do the work while I watch them in 3D, live or on replay. Highly recommended for productivity, or at least for the feeling of it. The sleepy guy above comes from here too.',
@@ -224,7 +228,8 @@ const T = {
     handle: 'Dr.Egg · burn001',
     lede: '건축공간연구원(AURI) 건축혁신본부에서 스마트시티, 녹색건축·도시, 건축·도시정보체계를 연구합니다. 요즘은 AI에게 건축법령을 가르치고, AI가 숙제하는 모습을 구경하는 도구도 만듭니다.',
     auri: '건축공간연구원',
-    cap: '끌어서 돌리기 · 커밋 사이사이 졸고 있습니다',
+    reroll: '다른 모습',
+    scenes: { desk: '서서 코딩 중', golf: '골프 스윙 연습 중', couch: '소파에 누워 코딩 중', nap: '책상에서 쪽잠', lean: '의자 젖히고 커피 한 잔', board: '화이트보드에 평면도 그리는 중', walk: '노트북 끼고 회의 가는 중', treadmill: '러닝머신 데스크에서 코딩 중', papers: '검토 보고서 더미 속' },
     'h-work': '만들고 있는 것', 'h-cv': '걸어온 길', 'k-alris': '연구 시스템 · 건축공간연구원', 'k-agent4d': '개인 프로젝트 · 오픈소스',
     alris: '건축법령을 물으면 조문 번호부터 내밀어서, 믿어 달라고 조를 일이 없습니다. 법령과 자치법규 15만여 건을 야근 수당 안 받는 에이전트들이 나눠 읽습니다.',
     agent4d: '에이전트는 일하고 저는 그걸 3D로 구경합니다. 실시간으로도, 다시 보기로도요. 위에서 졸고 있는 사람도 이 프로젝트 출신입니다.',
@@ -309,11 +314,15 @@ $('tabs').addEventListener('keydown', (e) => {
   if (n) { e.preventDefault(); showTab(TABS[(i + n + TABS.length) % TABS.length], true); }
 });
 const rows = (list) => list.map(([w, x]) => `<li><span class="when">${w}</span><span class="what">${x}</span></li>`).join('');
+let lang = 'en', avatarScene = '';
+function showCap() { $('cap').textContent = T[lang].scenes[avatarScene] || ''; }
 function setLang(l) {
+  lang = l;
   const d = T[l];
   document.documentElement.lang = l;
   document.title = d.title;
   document.querySelectorAll('[data-t]').forEach((el) => { const v = d[el.dataset.t]; if (typeof v === 'string') el.innerHTML = v; });
+  $('reroll').title = d.reroll; $('reroll').setAttribute('aria-label', d.reroll); showCap();
   $('fields').innerHTML = d.fields.map((f) => `<li>${f}</li>`).join('');
   const body = {
     pubs: `<ul class="plain">${d.pubs.map((p) => `<li>${p}</li>`).join('')}</ul>`,
@@ -329,7 +338,9 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
 let start = new URLSearchParams(location.search).get('lang') || location.hash.replace('#', '');
 if (start !== 'ko' && start !== 'en') { try { start = localStorage.getItem('lang'); } catch {} }
 setLang(start === 'ko' ? 'ko' : 'en');
-if (window.THREE && window.mountAvatar) mountAvatar($('stage'));
+$('stage').addEventListener('avatarchange', (e) => { avatarScene = e.detail.scene; showCap(); });
+if (window.THREE && window.mountAvatar) { const av = mountAvatar($('stage')); $('reroll').addEventListener('click', () => av.reroll()); }
+else $('reroll').hidden = true;
 </script>
 </body>
 </html>
