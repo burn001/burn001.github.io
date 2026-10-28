@@ -66,12 +66,7 @@ ul.plain li { padding-block: 3px; }
 ul.plain li small { color: var(--dim); font-size: 14px; }
 .topics { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .topics li { font-size: 14px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface); }
-ul.repos { list-style: none; margin: 0; padding: 0; }
-ul.repos li { display: grid; grid-template-columns: 15em minmax(0, 1fr); gap: 2px 18px; padding-block: 6px; }
-ul.repos a { font-family: var(--f-mono); font-size: 14px; }
-ul.repos span { color: var(--dim); }
-@media (max-width: 600px) { ul.repos li { grid-template-columns: 1fr; } }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+@media (max-width: 600px) { .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
 .card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--fg); text-decoration: none; transition: border-color .15s, transform .15s; }
 .card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .card .kicker { font: 12px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
@@ -157,7 +152,7 @@ const T = {
     'h-work': 'Work', 'h-cv': 'CV', 'k-alris': 'Research system · AURI', 'k-agent4d': 'Side project · open source',
     alris: 'AI service that answers questions on Korean building law with the provisions behind each answer. Statutes and 150,000+ local ordinances, searched by a team of agents.',
     agent4d: 'See what your Claude Code agents are doing, live in 3D, then replay it. The avatar above uses its voxel office rig.',
-    tabs: { exp: 'Experience', edu: 'Education', pubs: 'Papers', proj: 'Projects', service: 'Committees', awards: 'Awards', repos: 'Code' },
+    tabs: { exp: 'Experience', edu: 'Education', pubs: 'Papers', proj: 'Projects', service: 'Committees', awards: 'Awards' },
     'h-fields': 'Fields',
     fields: ['Smart cities', 'Green buildings &amp; cities', 'Building &amp; urban information systems', 'AI for building law', 'Building statistics'],
     'h-exp': 'Experience',
@@ -218,13 +213,6 @@ const T = {
       ['2019', 'Minister’s Commendation, Ministry of Land, Infrastructure and Transport'],
       ['2016', 'Commendation, Minister for Government Policy Coordination'],
     ],
-    'h-code': 'Code',
-    repos: [
-      ['agent4d', 'Live 3D viewer for Claude Code agents.'],
-      ['smart-city-plan-analysis', 'How 37 local governments carried out their smart city plans.'],
-      ['gwacheon-ahp-survey', 'AHP expert survey for evaluating ageing government office buildings.'],
-      ['complex-use-survey', 'Delphi and AHP expert survey on mixed-use design standards.'],
-    ],
     foot: 'Views here are my own. Agent4D is an unofficial project, not made or endorsed by Anthropic.',
   },
   ko: {
@@ -238,7 +226,7 @@ const T = {
     'h-work': '만드는 것', 'h-cv': '이력', 'k-alris': '연구 시스템 · 건축공간연구원', 'k-agent4d': '개인 프로젝트 · 오픈소스',
     alris: '건축법령 질문에 근거 조문과 함께 답하는 인공지능 건축법령 서비스. 법령과 자치법규 15만여 건을 여러 에이전트가 나눠 검색합니다.',
     agent4d: 'Claude Code 에이전트가 하는 일을 3D로 실시간 보고 다시 재생합니다. 위 아바타도 이 프로젝트의 복셀 캐릭터입니다.',
-    tabs: { exp: '경력', edu: '학력', pubs: '논문', proj: '연구', service: '위원회', awards: '수상', repos: '코드' },
+    tabs: { exp: '경력', edu: '학력', pubs: '논문', proj: '연구', service: '위원회', awards: '수상' },
     'h-fields': '전문 분야',
     fields: ['스마트시티', '녹색건축·도시', '건축·도시정보체계', '건축법령 AI', '건축 통계'],
     'h-exp': '경력',
@@ -299,19 +287,12 @@ const T = {
       ['2019', '국토교통부장관 표창 <small>업무유공</small>'],
       ['2016', '국무조정실장 표창 <small>업무유공</small>'],
     ],
-    'h-code': '코드',
-    repos: [
-      ['agent4d', 'Claude Code 에이전트 3D 실시간 뷰어'],
-      ['smart-city-plan-analysis', '37개 지자체 스마트도시계획 이행실적 분석 대시보드'],
-      ['gwacheon-ahp-survey', '노후 정부청사 종합진단 평가체계 전문가 조사(AHP)'],
-      ['complex-use-survey', '복합활용 설계기준 전문가 설문 시스템(델파이·AHP)'],
-    ],
     foot: '이 페이지의 의견은 개인 의견입니다. Agent4D는 Anthropic이 만들거나 보증한 프로젝트가 아닌 비공식 프로젝트입니다.',
   },
 };
 
 const $ = (id) => document.getElementById(id);
-const TABS = ['exp', 'edu', 'pubs', 'proj', 'service', 'awards', 'repos'];
+const TABS = ['exp', 'edu', 'pubs', 'proj', 'service', 'awards'];
 let current = 'exp';
 function showTab(k, focus) {
   current = k;
@@ -335,7 +316,6 @@ function setLang(l) {
   $('fields').innerHTML = d.fields.map((f) => `<li>${f}</li>`).join('');
   const body = {
     pubs: `<ul class="plain">${d.pubs.map((p) => `<li>${p}</li>`).join('')}</ul>`,
-    repos: `<ul class="repos">${d.repos.map(([n, x]) => `<li><a href="https://github.com/burn001/${n}">${n}</a><span>${x}</span></li>`).join('')}</ul>`,
   };
   for (const k of ['exp', 'edu', 'proj', 'service', 'awards']) body[k] = `<ul class="rows">${rows(d[k])}</ul>`;
   $('tabs').innerHTML = TABS.map((k) => `<button type="button" role="tab" id="tab-${k}" aria-controls="panel-${k}">${d.tabs[k]}</button>`).join('');
