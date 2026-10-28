@@ -789,9 +789,14 @@ window.mountAvatar = function (stage, pin = {}) {
     return { scene: sc, outfit: o };
   }
 
-  // ── 장면 싣기
-  let world = null, R = null, cur = null, S = null, t0 = 0;
+  // ── 장면 싣기 + 복셀 전환: 블록이 위에서부터 줄어들어 사라지고(0.3초), 새 장면이 바닥부터 톡톡 솟는다(0.55초).
+  // 옷만 바뀌면 사람 블록만, 장면이 바뀌면 소품까지. 카메라는 새 장면 프레이밍으로 보간. 연타하면 지금 크기에서 이어받는다.
+  let world = null, R = null, cur = null, S = null, t0 = 0, parts = [], first = true;
   const clock = new THREE.Clock();
+  const camFrom = [V(), V()], camTo = [V(), V()];
+  const TR = { phase: 'idle', t: 0, pending: null, keep: false };
+  const OUT = 0.3, IN = 0.55;
+  const backOut = (u) => { const c = 1.7; u -= 1; return 1 + (c + 1) * u * u * u + c * u * u; };
   function load({ scene: sc, outfit }) {
     if (world) { scene.remove(world); }
     disposables.splice(0).forEach((d) => d.dispose());
@@ -800,16 +805,39 @@ window.mountAvatar = function (stage, pin = {}) {
     cur = SCENES[sc]; S = cur.build(world, R) || {};
     if (!cur.floor) floorScroll(0);
     resetRig(R); if (cur.init) cur.init(S, R);
-    cam.position.set(...cur.cam[0]); controls.target.set(...cur.cam[1]); controls.update();
+    camTo[0].set(...cur.cam[0]); camTo[1].set(...cur.cam[1]);
+    if (first) { cam.position.copy(camTo[0]); controls.target.copy(camTo[1]); controls.update(); }
+    camFrom[0].copy(cam.position); camFrom[1].copy(controls.target);
+    // 전환용 블록 목록: 높이 순서(0 바닥 → 1 꼭대기)와 사람 여부
+    world.updateMatrixWorld(true);
+    const mine = new Set(); R.root.traverse((o) => mine.add(o));
+    parts = []; let lo = Infinity, hi = -Infinity;
+    world.traverse((o) => { if (!o.isMesh) return; const y = o.getWorldPosition(_a).y; lo = Math.min(lo, y); hi = Math.max(hi, y); parts.push({ m: o, s: o.scale.clone(), y, ch: mine.has(o), f: 1, j: Math.random() }); });
+    for (const p of parts) p.k = (p.y - lo) / Math.max(0.01, hi - lo);
+    first = false;
     t0 = clock.getElapsedTime();
     api.scene = sc; api.outfit = outfit.id;
     store.set('avatar.scene', sc); store.set('avatar.outfit', outfit.id);
     stage.dispatchEvent(new CustomEvent('avatarchange', { detail: { scene: sc, outfit: outfit.id } }));
   }
+  const canvas = renderer.domElement;
+  let fadeTimer = 0;
+  function change(choice) {
+    stage.dispatchEvent(new CustomEvent('avatarchanging'));
+    if (reduce) { // 움직임 줄이기: 짧은 페이드만
+      canvas.style.transition = 'opacity .18s'; canvas.style.opacity = '0'; TR.pending = choice;
+      clearTimeout(fadeTimer); fadeTimer = setTimeout(() => { load(TR.pending); camFrom[0].copy(camTo[0]); camFrom[1].copy(camTo[1]); cam.position.copy(camTo[0]); controls.target.copy(camTo[1]); canvas.style.opacity = '1'; }, 180);
+      return;
+    }
+    TR.pending = choice;
+    if (TR.phase === 'out') return; // 이미 사라지는 중: 다음에 올 장면만 바꾼다
+    for (const p of parts) p.from = p.f;
+    TR.keep = choice.scene === api.scene; TR.phase = 'out'; TR.t = clock.getElapsedTime();
+  }
   const api = {
     scenes: Object.keys(SCENES), outfits: Object.keys(OUTFITS),
-    reroll() { load(choose({}, api.scene)); },
-    set(sc, of) { load(choose({ scene: sc, outfit: of })); },
+    reroll() { change(choose({}, TR.pending && TR.phase === 'out' ? TR.pending.scene : api.scene)); },
+    set(sc, of) { change(choose({ scene: sc || api.scene, outfit: of })); },
   };
   const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
   new ResizeObserver(fit).observe(stage); fit();
@@ -817,16 +845,34 @@ window.mountAvatar = function (stage, pin = {}) {
 
   const fixedT = arg('t') != null ? parseFloat(arg('t')) : null;
   load(choose({ scene: arg('scene'), outfit: arg('outfit'), hat: arg('hat'), glasses: arg('glasses') }, store.get('avatar.scene')));
+  if (reduce) { canvas.style.opacity = '0'; requestAnimationFrame(() => { canvas.style.transition = 'opacity .25s'; canvas.style.opacity = '1'; }); }
+  else { TR.phase = 'in'; TR.keep = false; TR.t = clock.getElapsedTime(); }
 
   renderer.setAnimationLoop(() => {
-    const t = fixedT ?? (reduce ? cur.still : clock.getElapsedTime() - t0);
+    const now = clock.getElapsedTime();
+    const t = fixedT ?? (reduce ? cur.still : now - t0);
+    for (const p of parts) p.m.scale.copy(p.s);
     resetRig(R);
     S.face = null; S.z = null;
     cur.pose(t, S, R);
     const f = S.face || { lid: 0.03 };
     R.eyes.forEach((e) => (e.scale.y = f.lid));
     const yawn = f.yawn || 0; R.mouth.scale.set(0.05 - 0.01 * yawn, 0.018 + 0.06 * yawn, 0.01);
-    zzz(S.z, S.zBase || V());
+    zzz(TR.phase === 'idle' ? S.z : null, S.zBase || V());
+    if (TR.phase !== 'idle') {
+      let e = now - TR.t;
+      if (TR.phase === 'out') {
+        for (const p of parts) p.f = TR.keep && !p.ch ? 1 : p.from * (1 - smooth((e - (1 - p.k) * 0.12 - p.j * 0.03) / 0.16));
+        if (e >= OUT) { load(TR.pending); TR.phase = 'in'; TR.t = now; e = 0; }
+      }
+      if (TR.phase === 'in') {
+        for (const p of parts) { const u = clamp((e - p.k * 0.25 - p.j * 0.06) / 0.22, 0, 1); p.f = TR.keep && !p.ch ? 1 : u <= 0 ? 0 : backOut(u); }
+        const u = smooth(e / IN);
+        cam.position.lerpVectors(camFrom[0], camTo[0], u); controls.target.lerpVectors(camFrom[1], camTo[1], u);
+        if (e >= IN) { TR.phase = 'idle'; for (const p of parts) p.f = 1; }
+      }
+      for (const p of parts) { p.m.visible = p.f > 0.002; p.m.scale.multiplyScalar(Math.max(p.f, 0.002)); }
+    }
     controls.update(); renderer.render(scene, cam);
   });
   return api;

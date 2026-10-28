@@ -42,7 +42,8 @@ h1 small { display: block; font: 400 16px var(--f-mono); color: var(--dim); marg
 .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-family: var(--f-mono); font-size: 14px; }
 .stage { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; }
 .stage canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
-.stage .cap { position: absolute; left: 10px; bottom: 8px; max-width: calc(100% - 20px); font: 12px var(--f-mono); color: var(--dim); background: var(--surface); padding: 2px 6px; border-radius: 4px; pointer-events: none; }
+.stage .cap { position: absolute; left: 10px; bottom: 8px; max-width: calc(100% - 20px); font: 12px var(--f-mono); color: var(--dim); background: var(--surface); padding: 2px 6px; border-radius: 4px; pointer-events: none; transition: opacity .25s; }
+.stage .cap.fade { opacity: 0; }
 .stage .reroll { position: absolute; right: 8px; top: 8px; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; color: var(--dim); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
 .stage .reroll:hover { color: var(--accent); border-color: var(--accent); }
 .stage .reroll svg { width: 18px; height: 18px; }
@@ -338,7 +339,8 @@ document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('cli
 let start = new URLSearchParams(location.search).get('lang') || location.hash.replace('#', '');
 if (start !== 'ko' && start !== 'en') { try { start = localStorage.getItem('lang'); } catch {} }
 setLang(start === 'ko' ? 'ko' : 'en');
-$('stage').addEventListener('avatarchange', (e) => { avatarScene = e.detail.scene; showCap(); });
+$('stage').addEventListener('avatarchanging', () => $('cap').classList.add('fade'));
+$('stage').addEventListener('avatarchange', (e) => { avatarScene = e.detail.scene; showCap(); $('cap').classList.remove('fade'); });
 if (window.THREE && window.mountAvatar) { const av = mountAvatar($('stage')); $('reroll').addEventListener('click', () => av.reroll()); }
 else $('reroll').hidden = true;
 </script>
